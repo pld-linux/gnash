@@ -1,0 +1,231 @@
+--- gnash-0.7/macros/libXML.m4.orig	2005-12-25 21:31:16.000000000 +0100
++++ gnash-0.7/macros/libXML.m4	2006-01-12 12:03:40.000000000 +0100
+@@ -29,16 +29,12 @@
+     LIBXML_LIBS="-L$libxml_libraries"
+   elif test "x$libxml_prefix" != "x" ; then
+     LIBXML_LIBS="-L$libxml_prefix/lib"
+-  elif test "x$prefix" != "xNONE" ; then
+-    LIBXML_LIBS="-L$libdir"
+   fi
+ 
+   if test "x$libxml_includes" != "x" ; then
+     LIBXML_CFLAGS="-I$libxml_includes"
+   elif test "x$libxml_prefix" != "x" ; then
+     LIBXML_CFLAGS="-I$libxml_prefix/include"
+-  elif test "$prefix" != "NONE"; then
+-    LIBXML_CFLAGS="-I$prefix/include"
+   fi
+ 
+   AC_MSG_CHECKING(for libxml)
+--- gnash-0.7/libgeometry/Makefile.am.orig	2005-12-21 03:07:54.000000000 +0100
++++ gnash-0.7/libgeometry/Makefile.am	2006-01-12 12:28:23.000000000 +0100
+@@ -23,7 +23,7 @@
+ AM_CPPFLAGS = -Wall
+ AM_LDFLAGS  = -lGL -lGLU $(SDL_LIBS)
+ 
+-lib_LTLIBRARIES = libgeometry.la
++pkglib_LTLIBRARIES = libgeometry.la
+ 
+ # These headers get installed
+ # include_HEADERS = log.h err.h proc.h serial.h xantrex.h outback.h
+@@ -62,48 +62,6 @@
+ #libgeometry_la_LDFLAGS = -module -avoid-version -no-undefined
+ #libgeometry_la_LIBDADD =  #@DL_LIB@  # $(LIBLTDL)
+ 
+-# These are basically copied from the Makefile.in produced by Automake.
+-# Unfortunately the -local options for changing these don't work...
+-# so we have to redefine them since we want to install with the package
+-# name for our library and headers to avoid any problems. So the only
+-# thing changes is includedir to pkgincludedir and libdir to pkglibdir.
+-install-includeHEADERS:
+-	@$(NORMAL_INSTALL)
+-	test -z "$(pkgincludedir)" || $(mkdir_p) "$(DESTDIR)$(pkgincludedir)"
+-	@list='$(include_HEADERS)'; for p in $$list; do \
+-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+-	  f=$(am__strip_dir) \
+-	  echo " $(includeHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+-	  $(includeHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgincludedir)/$$f"; \
+-	done
+-
+-uninstall-includeHEADERS: uninstall-libLTLIBRARIES
+-	@$(NORMAL_UNINSTALL)
+-	@list='$(include_HEADERS)'; for p in $$list; do \
+-	  f=$(am__strip_dir) \
+-	  echo " rm -f '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+-	  rm -f "$(DESTDIR)$(pkgincludedir)/$$f"; \
+-	done
+-
+-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+-	@$(NORMAL_INSTALL)
+-	test -z "$(pkglibdir)" || $(mkdir_p) "$(DESTDIR)$(pkglibdir)"
+-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+-	  if test -f $$p; then \
+-	    f=$(am__strip_dir) \
+-	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pkglibdir)/$$f'"; \
+-	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pkglibdir)/$$f"; \
+-	  else :; fi; \
+-	done
+-
+-uninstall-libLTLIBRARIES:
+-	@$(NORMAL_UNINSTALL)
+-	@set -x; list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+-	  p=$(am__strip_dir) \
+-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(pkglibdir)/$$p'"; \
+-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(pkglibdir)/$$p"; \
+-	done
+-
+ # Rebuild with GCC 4.x Mudflap support
+ mudflap:
+ 	@echo "Rebuilding with GCC Mudflap support"
+--- gnash-0.7/server/Makefile.am.orig	2005-12-21 03:09:27.000000000 +0100
++++ gnash-0.7/server/Makefile.am	2006-01-12 12:28:40.000000000 +0100
+@@ -22,7 +22,7 @@
+ AM_CXXFLAGS = $(CFLAGS) $(SDL_CFLAGS) $(SDL_MIXER_CFLAGS) $(INCLUDES)
+ AM_CPPFLAGS = -Wall
+ 
+-lib_LTLIBRARIES = libserver.la
++pkglib_LTLIBRARIES = libserver.la
+ 
+ INCLUDES = -I.. \
+         -I$(top_srcdir) \
+@@ -87,48 +87,6 @@
+ #libserver_la_LDFLAGS = -module -avoid-version -no-undefined
+ #libserver_la_LIBDADD =  #@DL_LIB@  # $(LIBLTDL)
+ 
+-# These are basically copied from the Makefile.in produced by Automake.
+-# Unfortunately the -local options for changing these don't work...
+-# so we have to redefine them since we want to install with the package
+-# name for our library and headers to avoid any problems. So the only
+-# thing changes is includedir to pkgincludedir and libdir to pkglibdir.
+-install-includeHEADERS:
+-	@$(NORMAL_INSTALL)
+-	test -z "$(pkgincludedir)" || $(mkdir_p) "$(DESTDIR)$(pkgincludedir)"
+-	@list='$(include_HEADERS)'; for p in $$list; do \
+-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+-	  f=$(am__strip_dir) \
+-	  echo " $(includeHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+-	  $(includeHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgincludedir)/$$f"; \
+-	done
+-
+-uninstall-includeHEADERS: uninstall-libLTLIBRARIES
+-	@$(NORMAL_UNINSTALL)
+-	@list='$(include_HEADERS)'; for p in $$list; do \
+-	  f=$(am__strip_dir) \
+-	  echo " rm -f '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+-	  rm -f "$(DESTDIR)$(pkgincludedir)/$$f"; \
+-	done
+-
+-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+-	@$(NORMAL_INSTALL)
+-	test -z "$(pkglibdir)" || $(mkdir_p) "$(DESTDIR)$(pkglibdir)"
+-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+-	  if test -f $$p; then \
+-	    f=$(am__strip_dir) \
+-	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pkglibdir)/$$f'"; \
+-	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pkglibdir)/$$f"; \
+-	  else :; fi; \
+-	done
+-
+-uninstall-libLTLIBRARIES:
+-	@$(NORMAL_UNINSTALL)
+-	@set -x; list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+-	  p=$(am__strip_dir) \
+-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(pkglibdir)/$$p'"; \
+-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(pkglibdir)/$$p"; \
+-	done
+-
+ # Rebuild with GCC 4.x Mudflap support
+ mudflap:
+ 	@echo "Rebuilding with GCC Mudflap support"
+--- gnash-0.7/libbase/Makefile.am.orig	2006-01-12 12:22:34.000000000 +0100
++++ gnash-0.7/libbase/Makefile.am	2006-01-12 12:28:03.000000000 +0100
+@@ -23,12 +23,12 @@
+ AM_CPPFLAGS = -Wall
+ AM_LDFLAGS = $(OPENGL_LIBS) $(GLU_LIBS) $(SDL_LIBS)
+ 
+-lib_LTLIBRARIES = libbase.la
++pkglib_LTLIBRARIES = libbase.la
+ 
+ # These headers get installed
+ # include_HEADERS = log.h err.h proc.h serial.h xantrex.h outback.h
+ 
+-INCLUDES = -I.. $(srcdir) \
++INCLUDES = -I.. -I$(srcdir) \
+         $(LIBPNG_INCLUDE) \
+         $(ZLIB_INCLUDE) \
+         $(JPEGLIB_INCLUDE) \
+@@ -90,48 +90,6 @@
+ #libbase_la_LDFLAGS = -module -avoid-version -no-undefined
+ #libbase_la_LIBDADD =  #@DL_LIB@  # $(LIBLTDL)
+ 
+-# These are basically copied from the Makefile.in produced by Automake.
+-# Unfortunately the -local options for changing these don't work...
+-# so we have to redefine them since we want to install with the package
+-# name for our library and headers to avoid any problems. So the only
+-# thing changes is includedir to pkgincludedir and libdir to pkglibdir.
+-install-includeHEADERS:
+-	@$(NORMAL_INSTALL)
+-	test -z "$(pkgincludedir)" || $(mkdir_p) "$(DESTDIR)$(pkgincludedir)"
+-	@list='$(include_HEADERS)'; for p in $$list; do \
+-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+-	  f=$(am__strip_dir) \
+-	  echo " $(includeHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+-	  $(includeHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgincludedir)/$$f"; \
+-	done
+-
+-uninstall-includeHEADERS: uninstall-libLTLIBRARIES
+-	@$(NORMAL_UNINSTALL)
+-	@list='$(include_HEADERS)'; for p in $$list; do \
+-	  f=$(am__strip_dir) \
+-	  echo " rm -f '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+-	  rm -f "$(DESTDIR)$(pkgincludedir)/$$f"; \
+-	done
+-
+-install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+-	@$(NORMAL_INSTALL)
+-	test -z "$(pkglibdir)" || $(mkdir_p) "$(DESTDIR)$(pkglibdir)"
+-	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+-	  if test -f $$p; then \
+-	    f=$(am__strip_dir) \
+-	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(pkglibdir)/$$f'"; \
+-	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(pkglibdir)/$$f"; \
+-	  else :; fi; \
+-	done
+-
+-uninstall-libLTLIBRARIES:
+-	@$(NORMAL_UNINSTALL)
+-	@set -x; list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+-	  p=$(am__strip_dir) \
+-	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(pkglibdir)/$$p'"; \
+-	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(pkglibdir)/$$p"; \
+-	done
+-
+ # Rebuild with GCC 4.x Mudflap support
+ mudflap:
+ 	@echo "Rebuilding with GCC Mudflap support"
+--- gnash-0.7/macros/firefox.m4.orig	2005-12-22 06:08:12.000000000 +0100
++++ gnash-0.7/macros/firefox.m4	2006-01-12 12:43:06.000000000 +0100
+@@ -23,7 +23,7 @@
+ dnl
+ dnl This enables or disables the support to make Gnash function as a
+ dnl Mozilla or Firefox plugin.
+-AC_ARG_ENABLE(reader, [  --enable-plugin      Enable support for being a plugin],
++AC_ARG_ENABLE(plugin, [  --enable-plugin      Enable support for being a plugin],
+ [case "${enableval}" in
+   yes) plugin=yes ;;
+   no)  plugin=no ;;
+@@ -63,13 +63,7 @@
+     AC_CHECK_PROG(mconfig, mozilla-config, mozilla-config)
+   fi
+ 
+-  if test x"$mconfig" = "x" ; then
+-    plugin="no"
+-    FIREFOX_CFLAGS=""
+-    FIREFOX_LIBS=""
+-    FIREFOX_DEFS=""
+-    FIREFOX_PLUGINS="$HOME/.mozilla/plugins"
+-  else
++  if test x"$mconfig" != "x" ; then
+     AC_MSG_CHECKING(for Firefox/Mozilla SDK)
+     if test "x$FIREFOX_CFLAGS" = "x" ; then
+       FIREFOX_CFLAGS=`$mconfig --cflags`
