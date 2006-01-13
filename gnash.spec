@@ -16,11 +16,13 @@ BuildRequires:	SDL_mixer-devel
 BuildRequires:	XFree86-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
+BuildRequires:	glut-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel
+BuildRequires:	mozilla-firefox-devel
 BuildRequires:	scrollkeeper
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -52,23 +54,22 @@ odga³êziony, a kod przeorganizowany w stylu projektu GNU.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+export PATH=/usr/lib/mozilla-firefox/:$PATH
 %configure \
-	--disable-plugin \
 	--disable-static \
 	--enable-pthreads
-# doesn't build with mozilla 1.7.x
-#	--with-firefox-includes=/usr/include/mozilla/plugin \
-#	--with-firefox-libraries=%{_libdir}
-%{__make}
-#	FIREFOX_CFLAGS="-I/usr/include/mozilla/plugin -I/usr/include/mozilla/java -I/usr/include/nspr" \
-#	FIREFOX_PLUGINS=%{_libdir}/mozilla
+%{__make} \
+	FIREFOX_CFLAGS="-I/usr/include/mozilla-firefox/plugin -I/usr/include/mozilla-firefox/java -I/usr/include/nspr" \
+	FIREFOX_PLUGINS=%{_libdir}/mozilla-firefox
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
-#	FIREFOX_PLUGINS=%{_libdir}/mozilla
+	DESTDIR=$RPM_BUILD_ROOT \
+	FIREFOX_PLUGINS=$RPM_BUILD_ROOT%{_libdir}/mozilla-firefox/plugins
+install plugin/mozilla-sdk/.libs/libmozsdk.so.0.0.0 $RPM_BUILD_ROOT%{_libdir}
 
 # unusable
 rm -f $RPM_BUILD_ROOT%{_includedir}/*.h
@@ -76,6 +77,9 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/gnash/*.{la,so}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -85,5 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/gprocessor
 %dir %{_libdir}/gnash
 %attr(755,root,root) %{_libdir}/gnash/lib*.so.*
+%attr(755,root,root) %{_libdir}/mozilla-firefox/plugins/*
+%attr(755,root,root) %{_libdir}/lib*.so.*
 %{_datadir}/gnash
 %{_omf_dest_dir}/gnash
