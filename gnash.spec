@@ -81,8 +81,6 @@ u¿yciu biblioteki Gnash.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-# mmm?? %{_lib} or drop?
-export PATH=/usr/lib/mozilla-firefox:$PATH
 %configure \
 	--disable-static \
 	--enable-ghelp \
@@ -117,6 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gnash/gnash_128_96.ico
 %{_mandir}/man1/gnash.1*
 %attr(755,root,root) %{_libdir}/libgnashamf-*.so
+%attr(755,root,root) %{_libdir}/libgnashbackend-*.so
 %attr(755,root,root) %{_libdir}/libgnashbase-*.so
 %attr(755,root,root) %{_libdir}/libgnashgeo-*.so
 %attr(755,root,root) %{_libdir}/libgnashgui-*.so
