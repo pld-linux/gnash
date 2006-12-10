@@ -98,8 +98,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# useless without --enable-sdk-install
-rm -f $RPM_BUILD_ROOT%{_libdir}/libgnash*.{la,so}
+# useless without --enable-sdk-install, which does nothing atm
+rm -f $RPM_BUILD_ROOT%{_libdir}/libgnash*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -116,8 +116,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/gnash
 %{_datadir}/gnash/gnash_128_96.ico
 %{_mandir}/man1/gnash.1*
-# removed in install section
-#%attr(755,root,root) %{_libdir}/libgnash*.so.*.*.*
+%attr(755,root,root) %{_libdir}/libgnashamf-*.so
+%attr(755,root,root) %{_libdir}/libgnashbase-*.so
+%attr(755,root,root) %{_libdir}/libgnashgeo-*.so
+%attr(755,root,root) %{_libdir}/libgnashgui-*.so
+%attr(755,root,root) %{_libdir}/libgnashserver-*.so
 %attr(755,root,root) %{_libdir}/browser-plugins/libgnashplugin.so
 
 %if %{with kde}
