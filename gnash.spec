@@ -3,7 +3,7 @@
 %bcond_without	kde	# don't build klash plugin for Konqueror
 #
 Summary:	Gnash - free Flash movie player
-Summary(pl):	Gnash - wolnodostêpny odtwarzacz filmów Flash
+Summary(pl.UTF-8):   Gnash - wolnodostÄ™pny odtwarzacz filmÃ³w Flash
 Name:		gnash
 Version:	0.7.2
 Release:	0.1
@@ -50,17 +50,17 @@ setup to be an industrial strength project that could be used by
 everyone that uses Firefox. So in early December of 2005, GameSWF was
 forked, and the code rearranged in GNU project style.
 
-%description -l pl
+%description -l pl.UTF-8
 Gnash jest oryginalnie oparty na kodzie GameSWF autorstwa Thatchera
-Ulricha. GameSWF to najbardziej zaawansowany z wolnodostêpnych
-odtwarzaczy filmów Flash i implementuje w miarê szeroki podzbiór
-formatu Flash v7. GameSWF by³ jednak nie wspieranym oprogramowaniem
-public domain, wiêc na pocz±tku grudnia 2005 GameSWF zosta³
-odga³êziony, a kod przeorganizowany w stylu projektu GNU.
+Ulricha. GameSWF to najbardziej zaawansowany z wolnodostÄ™pnych
+odtwarzaczy filmÃ³w Flash i implementuje w miarÄ™ szeroki podzbiÃ³r
+formatu Flash v7. GameSWF byÅ‚ jednak nie wspieranym oprogramowaniem
+public domain, wiÄ™c na poczÄ…tku grudnia 2005 GameSWF zostaÅ‚
+odgaÅ‚Ä™ziony, a kod przeorganizowany w stylu projektu GNU.
 
 %package -n konqueror-plugin-klash
 Summary:	Klash plugin for Konqueror
-Summary(pl):	Wtyczka Klash dla Konquerora
+Summary(pl.UTF-8):   Wtyczka Klash dla Konquerora
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	konqueror
@@ -68,9 +68,9 @@ Requires:	konqueror
 %description -n konqueror-plugin-klash
 Klash plugin for Konqueror for displaying Flash using Gnash library.
 
-%description -n konqueror-plugin-klash -l pl
-Wtyczka Klash dla Konquerora s³u¿±ca do wy¶wietlania Flasha przy
-u¿yciu biblioteki Gnash.
+%description -n konqueror-plugin-klash -l pl.UTF-8
+Wtyczka Klash dla Konquerora sÅ‚uÅ¼Ä…ca do wyÅ›wietlania Flasha przy
+uÅ¼yciu biblioteki Gnash.
 
 %prep
 %setup -q
