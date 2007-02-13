@@ -3,7 +3,7 @@
 %bcond_without	kde	# don't build klash plugin for Konqueror
 #
 Summary:	Gnash - free Flash movie player
-Summary(pl.UTF-8):   Gnash - wolnodostępny odtwarzacz filmów Flash
+Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
 Version:	0.7.2
 Release:	0.1
@@ -60,7 +60,7 @@ odgałęziony, a kod przeorganizowany w stylu projektu GNU.
 
 %package -n konqueror-plugin-klash
 Summary:	Klash plugin for Konqueror
-Summary(pl.UTF-8):   Wtyczka Klash dla Konquerora
+Summary(pl.UTF-8):	Wtyczka Klash dla Konquerora
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	konqueror
