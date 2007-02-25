@@ -38,8 +38,6 @@ BuildRequires:	xorg-lib-libXft-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	zlib-devel
-Requires:	browser-plugins(%{_target_base_arch})
-Provides:	browser(flash)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -80,6 +78,7 @@ Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	browser-plugins(%{_target_base_arch})
 Requires:	browser-plugins >= 2.0
+Provides:	browser(flash)
 Obsoletes:	browser-plugin-gplflash2
 Obsoletes:	mozilla-plugin-gplflash2
 
