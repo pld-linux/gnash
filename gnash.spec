@@ -39,6 +39,7 @@ BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	zlib-devel
 Requires:	browser-plugins(%{_target_base_arch})
+Provides:	browser(flash)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -72,6 +73,24 @@ Klash plugin for Konqueror for displaying Flash using Gnash library.
 Wtyczka Klash dla Konquerora służąca do wyświetlania Flasha przy
 użyciu biblioteki Gnash.
 
+%package -n browser-plugin-%{name}
+Summary:	Browser plugin for Flash rendering
+Summary(pl.UTF-8):	Wtyczka przeglądarki wyświetlająca animacje Flash
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+Requires:	browser-plugins(%{_target_base_arch})
+Requires:	browser-plugins >= 2.0
+Obsoletes:	browser-plugin-gplflash2
+Obsoletes:	mozilla-plugin-gplflash2
+
+%description -n browser-plugin-%{name}
+Browser plugin for rendering of Flash animations based on gnash
+library.
+
+%description -n browser-plugin-%{name} -l pl.UTF-8
+Wtyczka przeglądarki wyświetlająca animacje Flash oparta na bibliotece
+gnash.
+
 %prep
 %setup -q
 
@@ -87,7 +106,7 @@ użyciu biblioteki Gnash.
 	%{?with_kde:--enable-klash} \
 	--enable-mp3 \
 	--enable-pthreads \
-	--with-plugindir=%{_libdir}/browser-plugins
+	--with-plugindir=%{_browserpluginsdir}
 %{__make}
 
 %install
@@ -105,6 +124,14 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
+%post -n browser-plugin-%{name}
+%update_browser_plugins
+
+%postun -n browser-plugin-%{name}
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
@@ -120,7 +147,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libgnashgeo-*.so
 %attr(755,root,root) %{_libdir}/libgnashgui-*.so
 %attr(755,root,root) %{_libdir}/libgnashserver-*.so
-%attr(755,root,root) %{_libdir}/browser-plugins/libgnashplugin.so
+
+%files -n browser-plugin-%{name}
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_browserpluginsdir}/libgnashplugin.so
 
 %if %{with kde}
 %files -n konqueror-plugin-klash
