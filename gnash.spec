@@ -11,6 +11,7 @@ License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	ftp://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	b3a3b22d608b5050b1b2743bc348c536
+Patch0:		%{name}-sh.patch
 URL:		http://www.gnu.org/software/gnash/
 BuildRequires:	OpenGL-devel
 BuildRequires:	OpenGL-glut-devel
@@ -19,14 +20,18 @@ BuildRequires:	SDL_mixer-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 BuildRequires:	boost-devel
+BuildRequires:	boost-date_time-devel
 BuildRequires:	cairo-devel
+BuildRequires:	curl-devel
+#BuildRequires:	ffmpeg-devel
+BuildRequires:	gstreamer-devel
 %{?with_kde:BuildRequires:	kdelibs-devel >= 3.0}
 BuildRequires:	gstreamer-devel >= 0.10
-BuildRequires:	gtk+2-devel >= 2.0
+BuildRequires:	gtk+2-devel >= 1:2.0
 BuildRequires:	gtkglext-devel
 BuildRequires:	libjpeg-devel
-BuildRequires:	libmad-devel
-BuildRequires:	libogg-devel
+#BuildRequires:	libmad-devel
+#BuildRequires:	libogg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
@@ -92,6 +97,7 @@ gnash.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -99,12 +105,14 @@ gnash.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
+# use gstreamer as media handler - ffmpeg doesn't have extern "C" wrappers
 %configure \
 	--disable-static \
 	--enable-ghelp \
 	%{?with_kde:--enable-klash} \
-	--enable-mp3 \
+	--enable-media=gst \
 	--enable-pthreads \
+	--enable-visibility \
 	--with-plugindir=%{_browserpluginsdir}
 %{__make}
 
@@ -116,6 +124,8 @@ rm -rf $RPM_BUILD_ROOT
 
 # useless without --enable-sdk-install, which does nothing atm
 rm -f $RPM_BUILD_ROOT%{_libdir}/libgnash*.la
+
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -131,20 +141,21 @@ if [ "$1" = 0 ]; then
 	%update_browser_plugins
 fi
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
+%attr(755,root,root) %{_bindir}/cygnal
 %attr(755,root,root) %{_bindir}/gnash
 %attr(755,root,root) %{_bindir}/gparser
 %attr(755,root,root) %{_bindir}/gprocessor
-%dir %{_datadir}/gnash
-%{_datadir}/gnash/gnash_128_96.ico
+%{_datadir}/gnash
 %{_mandir}/man1/gnash.1*
 %attr(755,root,root) %{_libdir}/libgnashamf-*.so
 %attr(755,root,root) %{_libdir}/libgnashbackend-*.so
 %attr(755,root,root) %{_libdir}/libgnashbase-*.so
 %attr(755,root,root) %{_libdir}/libgnashgeo-*.so
 %attr(755,root,root) %{_libdir}/libgnashgui-*.so
+%attr(755,root,root) %{_libdir}/libgnashplayer-*.so
 %attr(755,root,root) %{_libdir}/libgnashserver-*.so
 
 %files -n browser-plugin-%{name}
