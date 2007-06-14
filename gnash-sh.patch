@@ -1,0 +1,13 @@
+--- gnash-0.8.0/configure.ac.orig	2007-06-09 02:48:15.000000000 +0200
++++ gnash-0.8.0/configure.ac	2007-06-14 00:02:54.000551667 +0200
+@@ -472,8 +472,8 @@
+   plugin=no
+ else
+   AC_MSG_NOTICE([Configuring Gnash for native compilation])
+-  export incllist=`eval cat ${srcdir}/macros/incllist`
+-  export libslist=`eval cat ${srcdir}/macros/libslist`
++  export incllist="`eval cat ${srcdir}/macros/incllist`"
++  export libslist="`eval cat ${srcdir}/macros/libslist`"
+   export pathlist=$PATH
+ fi
+ 
