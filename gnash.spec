@@ -100,7 +100,7 @@ gnash.
 %patch0 -p1
 
 # contains libtool.m4 copy
-rm -f po/libltdl.m4
+rm -f macros/libltdl.m4
 
 %build
 %{__libtoolize}
