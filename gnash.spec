@@ -19,9 +19,9 @@ BuildRequires:	SDL-devel
 BuildRequires:	SDL_mixer-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
+BuildRequires:	boost-bind-devel
 BuildRequires:	boost-date_time-devel
 BuildRequires:	boost-devel
-BuildRequires:	boost-signals-devel
 BuildRequires:	cairo-devel
 BuildRequires:	curl-devel
 #BuildRequires:	ffmpeg-devel
