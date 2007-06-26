@@ -19,16 +19,17 @@ BuildRequires:	SDL-devel
 BuildRequires:	SDL_mixer-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
-BuildRequires:	boost-devel
 BuildRequires:	boost-date_time-devel
+BuildRequires:	boost-devel
+BuildRequires:	boost-signals-devel
 BuildRequires:	cairo-devel
 BuildRequires:	curl-devel
 #BuildRequires:	ffmpeg-devel
 BuildRequires:	gstreamer-devel
-%{?with_kde:BuildRequires:	kdelibs-devel >= 3.0}
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gtk+2-devel >= 1:2.0
 BuildRequires:	gtkglext-devel
+%{?with_kde:BuildRequires:	kdelibs-devel >= 3.0}
 BuildRequires:	libjpeg-devel
 #BuildRequires:	libmad-devel
 #BuildRequires:	libogg-devel
@@ -81,8 +82,8 @@ Summary:	Browser plugin for Flash rendering
 Summary(pl.UTF-8):	Wtyczka przeglądarki wyświetlająca animacje Flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	browser-plugins(%{_target_base_arch})
 Requires:	browser-plugins >= 2.0
+Requires:	browser-plugins(%{_target_base_arch})
 Provides:	browser(flash)
 Obsoletes:	browser-plugin-gplflash2
 Obsoletes:	mozilla-plugin-gplflash2
