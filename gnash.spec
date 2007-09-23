@@ -1,42 +1,44 @@
 #
 # Conditional build:
 %bcond_without	kde	# don't build klash plugin for Konqueror
+%bcond_with	tests
 #
 Summary:	Gnash - free Flash movie player
 Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
-Version:	0.8.0
-Release:	0.2
+Version:	0.8.1
+Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	ftp://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	b3a3b22d608b5050b1b2743bc348c536
-Patch0:		%{name}-sh.patch
+# Source0-md5:	5f80a25cb7a37fb351d28fd2097d8f3e
 URL:		http://www.gnu.org/software/gnash/
-BuildRequires:	OpenGL-devel
-BuildRequires:	OpenGL-glut-devel
-BuildRequires:	SDL-devel
-BuildRequires:	SDL_mixer-devel
+BuildRequires:	agg-devel
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 BuildRequires:	boost-bind-devel
 BuildRequires:	boost-date_time-devel
 BuildRequires:	boost-devel
+BuildRequires:	boost-thread-devel
 BuildRequires:	cairo-devel
 BuildRequires:	curl-devel
-#BuildRequires:	ffmpeg-devel
+BuildRequires:	doxygen
+BuildRequires:	expat-devel
+BuildRequires:	fontconfig-devel
+BuildRequires:	freetype-devel
+BuildRequires:	glib2-devel
 BuildRequires:	gstreamer-devel
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gtk+2-devel >= 1:2.0
 BuildRequires:	gtkglext-devel
 %{?with_kde:BuildRequires:	kdelibs-devel >= 3.0}
 BuildRequires:	libjpeg-devel
-#BuildRequires:	libmad-devel
-#BuildRequires:	libogg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
+BuildRequires:	pango-devel
+BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig
 BuildRequires:	scrollkeeper
 BuildRequires:	xorg-lib-libX11-devel
@@ -44,6 +46,12 @@ BuildRequires:	xorg-lib-libXft-devel
 BuildRequires:	xorg-lib-libXi-devel
 BuildRequires:	xorg-lib-libXmu-devel
 BuildRequires:	zlib-devel
+BuildRequires:	zlib-devel
+%if %{with tests}
+BuildRequires:	ming-devel
+BuildRequires:	mtasc
+BuildRequires:	swfmill
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -98,7 +106,6 @@ gnash.
 
 %prep
 %setup -q
-%patch0 -p1
 
 # contains libtool.m4 copy
 rm -f macros/libltdl.m4
@@ -148,19 +155,18 @@ fi
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
-%attr(755,root,root) %{_bindir}/cygnal
 %attr(755,root,root) %{_bindir}/gnash
 %attr(755,root,root) %{_bindir}/gparser
 %attr(755,root,root) %{_bindir}/gprocessor
+%attr(755,root,root) %{_bindir}/gtk-gnash
 %{_datadir}/gnash
 %{_mandir}/man1/gnash.1*
-%attr(755,root,root) %{_libdir}/libgnashamf-*.so
-%attr(755,root,root) %{_libdir}/libgnashbackend-*.so
-%attr(755,root,root) %{_libdir}/libgnashbase-*.so
-%attr(755,root,root) %{_libdir}/libgnashgeo-*.so
-%attr(755,root,root) %{_libdir}/libgnashgui-*.so
-%attr(755,root,root) %{_libdir}/libgnashplayer-*.so
-%attr(755,root,root) %{_libdir}/libgnashserver-*.so
+%dir %{_libdir}/gnash
+%attr(755,root,root) %{_libdir}/gnash/libgnashamf*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashbackend*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashbase*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashgeo*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashserver*.so
 
 %files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
@@ -170,10 +176,9 @@ fi
 %files -n konqueror-plugin-klash
 %defattr(644,root,root,755)
 %doc plugin/klash/README
-%attr(755,root,root) %{_bindir}/klash
+%attr(755,root,root) %{_bindir}/kde-gnash
 %{_libdir}/kde3/libklashpart.la
 %attr(755,root,root) %{_libdir}/kde3/libklashpart.so
 %{_datadir}/apps/klash
-%{_datadir}/config/klashrc
 %{_datadir}/services/klash_part.desktop
 %endif
