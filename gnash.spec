@@ -31,7 +31,9 @@ BuildRequires:	gstreamer-devel
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gtk+2-devel >= 1:2.0
 BuildRequires:	gtkglext-devel
-%{?with_kde:BuildRequires:	kdelibs-devel >= 3.0}
+%if %{with kde}
+BuildRequires:	kdelibs-devel >= 3.0
+%endif
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
@@ -120,7 +122,11 @@ rm -f macros/libltdl.m4
 %configure \
 	--disable-static \
 	--enable-ghelp \
-	%{?with_kde:--enable-klash} \
+%if %{with kde}
+	--enable-klash \
+	--with-qt-incl="%{_includedir}/qt" \
+	--with-qt-lib="%{_libdir}" \
+%endif
 	--enable-media=gst \
 	--enable-pthreads \
 	--enable-visibility \
