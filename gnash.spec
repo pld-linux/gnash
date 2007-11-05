@@ -122,10 +122,12 @@ rm -f macros/libltdl.m4
 %configure \
 	--disable-static \
 	--enable-ghelp \
+	--enable-gui=gtk%{?with_kde:,kde} \
 %if %{with kde}
-	--enable-klash \
 	--with-qt-incl="%{_includedir}/qt" \
 	--with-qt-lib="%{_libdir}" \
+%else
+	--disable-kparts \
 %endif
 	--enable-media=gst \
 	--enable-pthreads \
