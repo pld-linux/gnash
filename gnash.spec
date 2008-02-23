@@ -7,7 +7,7 @@ Summary:	Gnash - free Flash movie player
 Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
 Version:	0.8.1
-Release:	0.1
+Release:	0.2
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	ftp://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
