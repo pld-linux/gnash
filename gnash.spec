@@ -144,7 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 # useless without --enable-sdk-install, which does nothing atm
 rm -f $RPM_BUILD_ROOT%{_libdir}/libgnash*.la
 
-%find_lang %{name}
+%find_lang %{name} --all-name
 
 %clean
 rm -rf $RPM_BUILD_ROOT
