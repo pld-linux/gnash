@@ -1,19 +1,21 @@
 #
 # Conditional build:
 %bcond_without	kde	# don't build klash plugin for Konqueror
-%bcond_with	tests
+%bcond_with	tests	# nothing yet
 #
 Summary:	Gnash - free Flash movie player
 Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
-Version:	0.8.1
-Release:	0.2
+Version:	0.8.2
+Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	ftp://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	5f80a25cb7a37fb351d28fd2097d8f3e
+# Source0-md5:	05cac831181be3fb40cbf3c00ab25c0f
+Patch0:		%{name}-system-libltdl.patch
 URL:		http://www.gnu.org/software/gnash/
 BuildRequires:	agg-devel
+BuildRequires:	atk-devel >= 1.0
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
 BuildRequires:	boost-bind-devel
@@ -26,8 +28,7 @@ BuildRequires:	doxygen
 BuildRequires:	expat-devel
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel
-BuildRequires:	glib2-devel
-BuildRequires:	gstreamer-devel
+BuildRequires:	glib2-devel >= 2.0
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gtk+2-devel >= 1:2.0
 BuildRequires:	gtkglext-devel
@@ -35,12 +36,12 @@ BuildRequires:	gtkglext-devel
 BuildRequires:	kdelibs-devel >= 3.0
 %endif
 BuildRequires:	libjpeg-devel
+BuildRequires:	libltdl-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pango-devel
-BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig
 BuildRequires:	scrollkeeper
 BuildRequires:	xorg-lib-libX11-devel
@@ -108,9 +109,10 @@ gnash.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # contains libtool.m4 copy
-rm -f macros/libltdl.m4
+rm macros/libltdl.m4
 
 %build
 %{__libtoolize}
@@ -133,12 +135,17 @@ rm -f macros/libltdl.m4
 	--enable-pthreads \
 	--enable-visibility \
 	--with-plugindir=%{_browserpluginsdir}
-%{__make}
+%{__make} \
+	pluginsdir=%{_libdir}/gnash/plugins
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	pluginsdir=%{_libdir}/gnash/plugins
+
+%{__make} -C plugin install-plugin \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # useless without --enable-sdk-install, which does nothing atm
@@ -164,16 +171,17 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_bindir}/gnash
-%attr(755,root,root) %{_bindir}/gparser
 %attr(755,root,root) %{_bindir}/gprocessor
 %attr(755,root,root) %{_bindir}/gtk-gnash
+%attr(755,root,root) %{_bindir}/soldumper
 %{_datadir}/gnash
 %{_mandir}/man1/gnash.1*
+%{_mandir}/man1/gprocessor.1*
+%{_mandir}/man1/soldumper.1*
 %dir %{_libdir}/gnash
 %attr(755,root,root) %{_libdir}/gnash/libgnashamf*.so
-%attr(755,root,root) %{_libdir}/gnash/libgnashbackend*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashbase*.so
-%attr(755,root,root) %{_libdir}/gnash/libgnashgeo*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashmedia*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashserver*.so
 
 %files -n browser-plugin-%{name}
