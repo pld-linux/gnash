@@ -1,0 +1,90 @@
+--- gnash-0.8.2/libbase/Makefile.am.orig	2008-02-29 16:43:34.000000000 +0100
++++ gnash-0.8.2/libbase/Makefile.am	2008-03-10 19:33:33.645842402 +0100
+@@ -21,15 +21,9 @@
+ # this is where Gnash plugins get installed
+ pluginsdir = $(prefix)/lib/gnash/plugins
+ 
+-if INSTALL_LTDL
+-include_HEADERS =  $(top_srcdir)/libltdl/ltdl.h
+-LIBLTDLLIB = libltdl.la
+-LIBLTDLHEAD =  $(top_srcdir)/libltdl/ltdl.h
+-endif
+-
+ # If we are using an installable libltdl, then it needs to be built
+ # before libgnash, as libgnash depends on it for extensions.
+-pkglib_LTLIBRARIES =  $(LIBLTDLLIB) libgnashbase.la
++pkglib_LTLIBRARIES = libgnashbase.la
+ 
+ libgnashbase_la_CPPFLAGS = -DPLUGINSDIR=\"$(pluginsdir)\" \
+ 	-I.. -I$(srcdir) \
+@@ -107,7 +101,6 @@
+ 	$(NULL)
+ 
+ noinst_HEADERS = \
+-	$(LIBLTDLHEAD) \
+ 	container.h \
+ 	dlmalloc.h \
+ 	extension.h \
+@@ -149,17 +142,6 @@
+ 
+ libgnashbase_la_LDFLAGS = -release $(VERSION)
+ 
+-libltdlc_la_CPPFLAGS = $(LTDLINCL)
+-if CONVENIENCE_LTDL
+-noinst_LTLIBRARIES = libltdlc.la
+-libltdlc_la_SOURCES = $(top_srcdir)/libltdl/ltdl.c
+-endif
+-CLEANFILES = libltdl.la libltdlc.la
+-
+-libltdl_la_SOURCES = $(top_srcdir)/libltdl/ltdl.c
+-libltdl_la_LDFLAGS = -no-undefined -version-info 4:4:1
+-libltdl_la_LIBADD = $(LIBADD_DL)
+-
+ # Rebuild with GCC 4.x Mudflap support
+ mudflap:
+ 	@echo "Rebuilding with GCC Mudflap support"
+--- gnash-0.8.2/libmedia/Makefile.am.orig	2008-02-29 16:43:34.000000000 +0100
++++ gnash-0.8.2/libmedia/Makefile.am	2008-03-10 20:50:48.409962557 +0100
+@@ -21,15 +21,9 @@
+ # this is where Gnash plugins get installed
+ pluginsdir = $(prefix)/lib/gnash/plugins
+ 
+-if INSTALL_LTDL
+-include_HEADERS =  $(top_srcdir)/libltdl/ltdl.h
+-LIBLTDLLIB = libltdl.la
+-LIBLTDLHEAD =  $(top_srcdir)/libltdl/ltdl.h
+-endif
+-
+ # If we are using an installable libltdl, then it needs to be built
+ # before libgnash, as libgnash depends on it for extensions.
+-pkglib_LTLIBRARIES =  $(LIBLTDLLIB) libgnashmedia.la
++pkglib_LTLIBRARIES = libgnashmedia.la
+ 
+ libgnashmedia_la_CPPFLAGS = \
+ 	-I.. -I$(srcdir) \
+@@ -68,7 +62,6 @@
+ 	$(CURL_LIBS) \
+ 	$(OPENGL_LIBS) \
+ 	$(LIBLTDL) \
+-	$(LIBLTDLHEAD) \
+ 	$(BOOST_LIBS) \
+ 	$(PTHREAD_LIBS) \
+ 	$(NULL)
+@@ -168,17 +161,6 @@
+ 
+ libgnashmedia_la_LDFLAGS = -release $(VERSION)
+ 
+-libltdlc_la_CPPFLAGS = $(LTDLINCL)
+-if CONVENIENCE_LTDL
+-noinst_LTLIBRARIES = libltdlc.la
+-libltdlc_la_SOURCES = $(top_srcdir)/libltdl/ltdl.c
+-endif
+-CLEANFILES = libltdl.la libltdlc.la
+-
+-libltdl_la_SOURCES = $(top_srcdir)/libltdl/ltdl.c
+-libltdl_la_LDFLAGS = -no-undefined -version-info 4:4:1
+-libltdl_la_LIBADD = $(LIBADD_DL)
+-
+ # Rebuild with GCC 4.x Mudflap support
+ mudflap:
+ 	@echo "Rebuilding with GCC Mudflap support"
