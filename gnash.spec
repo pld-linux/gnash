@@ -10,7 +10,7 @@ Version:	0.8.2
 Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
-Source0:	ftp://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
+Source0:	http://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	05cac831181be3fb40cbf3c00ab25c0f
 Patch0:		%{name}-system-libltdl.patch
 URL:		http://www.gnu.org/software/gnash/
