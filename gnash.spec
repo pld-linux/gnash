@@ -1,4 +1,7 @@
 #
+# TODO:
+#		- port BR:scrollkeeper -> rarian
+#
 # Conditional build:
 %bcond_without	kde	# don't build klash plugin for Konqueror
 %bcond_with	tests	# nothing yet
@@ -13,6 +16,7 @@ Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	05cac831181be3fb40cbf3c00ab25c0f
 Patch0:		%{name}-system-libltdl.patch
+Patch1:		%{name}-lib64.patch
 URL:		http://www.gnu.org/software/gnash/
 BuildRequires:	agg-devel
 BuildRequires:	atk-devel >= 1.0
@@ -43,7 +47,8 @@ BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
-BuildRequires:	scrollkeeper
+#see TODO.
+#BuildRequires:	scrollkeeper
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXft-devel
 BuildRequires:	xorg-lib-libXi-devel
@@ -110,6 +115,7 @@ gnash.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 # contains libtool.m4 copy
 rm macros/libltdl.m4
@@ -134,7 +140,8 @@ rm macros/libltdl.m4
 	--enable-media=gst \
 	--enable-pthreads \
 	--enable-visibility \
-	--with-plugindir=%{_browserpluginsdir}
+	--with-npapi-plugindir=%{_browserpluginsdir}
+
 %{__make} \
 	pluginsdir=%{_libdir}/gnash/plugins
 
@@ -145,7 +152,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	pluginsdir=%{_libdir}/gnash/plugins
 
-%{__make} -C plugin install-plugin \
+%{__make} install-plugins \
 	DESTDIR=$RPM_BUILD_ROOT
 
 # useless without --enable-sdk-install, which does nothing atm
