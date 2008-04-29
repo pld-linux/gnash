@@ -22,10 +22,7 @@ BuildRequires:	agg-devel
 BuildRequires:	atk-devel >= 1.0
 BuildRequires:	autoconf >= 2.59-9
 BuildRequires:	automake
-BuildRequires:	boost-bind-devel
-BuildRequires:	boost-date_time-devel
-BuildRequires:	boost-devel
-BuildRequires:	boost-thread-devel
+BuildRequires:	boost-devel >= 1.35.0
 BuildRequires:	cairo-devel
 BuildRequires:	curl-devel
 BuildRequires:	doxygen
