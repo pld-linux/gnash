@@ -1,7 +1,4 @@
 #
-# TODO:
-#		- port BR:scrollkeeper -> rarian
-#
 # Conditional build:
 %bcond_without	kde	# don't build klash plugin for Konqueror
 %bcond_with	tests	# nothing yet
@@ -44,8 +41,7 @@ BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pango-devel
 BuildRequires:	pkgconfig
-#see TODO.
-#BuildRequires:	scrollkeeper
+BuildRequires:	scrollkeeper
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXft-devel
 BuildRequires:	xorg-lib-libXi-devel
