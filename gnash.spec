@@ -6,12 +6,12 @@
 Summary:	Gnash - free Flash movie player
 Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
-Version:	0.8.2
+Version:	0.8.3
 Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	05cac831181be3fb40cbf3c00ab25c0f
+# Source0-md5:	5033ef2602ea1234a9ccb73000a0dedb
 Patch0:		%{name}-system-libltdl.patch
 Patch1:		%{name}-lib64.patch
 URL:		http://www.gnu.org/software/gnash/
@@ -149,7 +149,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 # useless without --enable-sdk-install, which does nothing atm
-rm -f $RPM_BUILD_ROOT%{_libdir}/libgnash*.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libgnash*.la \
+	$RPM_BUILD_ROOT%{_libdir}/gnash/lib*.la
 
 %find_lang %{name} --all-name
 
@@ -170,23 +171,29 @@ fi
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
+%attr(755,root,root) %{_bindir}/dumpshm
 %attr(755,root,root) %{_bindir}/gnash
 %attr(755,root,root) %{_bindir}/gprocessor
 %attr(755,root,root) %{_bindir}/gtk-gnash
 %attr(755,root,root) %{_bindir}/soldumper
-%{_datadir}/gnash
-%{_mandir}/man1/gnash.1*
-%{_mandir}/man1/gprocessor.1*
-%{_mandir}/man1/soldumper.1*
 %dir %{_libdir}/gnash
 %attr(755,root,root) %{_libdir}/gnash/libgnashamf*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashbase*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashmedia*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashnet.so*
 %attr(755,root,root) %{_libdir}/gnash/libgnashserver*.so
+%attr(755,root,root) %{_libdir}/gnash/libmozsdk.so*
+%{_datadir}/gnash
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gnashrc
+%{_mandir}/man1/dumpshm.1*
+%{_mandir}/man1/gnash.1*
+%{_mandir}/man1/gprocessor.1*
+%{_mandir}/man1/soldumper.1*
 
 %files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_browserpluginsdir}/libgnashplugin.so
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gnashpluginrc
 
 %if %{with kde}
 %files -n konqueror-plugin-klash
