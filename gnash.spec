@@ -125,6 +125,7 @@ rm macros/libltdl.m4
 	--enable-ghelp \
 	--enable-gui=gtk%{?with_kde:,kde} \
 %if %{with kde}
+	--with-kde-pluginprefix=%{_prefix} \
 	--with-qt-incl="%{_includedir}/qt" \
 	--with-qt-lib="%{_libdir}" \
 %else
