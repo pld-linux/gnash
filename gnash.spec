@@ -6,12 +6,12 @@
 Summary:	Gnash - free Flash movie player
 Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
-Version:	0.8.3
+Version:	0.8.4
 Release:	0.1
 License:	GPL v2+
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	5033ef2602ea1234a9ccb73000a0dedb
+# Source0-md5:	b47a7ed4b7c66b8c2ebacc2286ef0d4b
 Patch0:		%{name}-system-libltdl.patch
 Patch1:		%{name}-lib64.patch
 URL:		http://www.gnu.org/software/gnash/
@@ -173,6 +173,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
 %attr(755,root,root) %{_bindir}/dumpshm
+%attr(755,root,root) %{_bindir}/flvdumper
 %attr(755,root,root) %{_bindir}/gnash
 %attr(755,root,root) %{_bindir}/gprocessor
 %attr(755,root,root) %{_bindir}/gtk-gnash
@@ -180,9 +181,9 @@ fi
 %dir %{_libdir}/gnash
 %attr(755,root,root) %{_libdir}/gnash/libgnashamf*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashbase*.so
+%attr(755,root,root) %{_libdir}/gnash/libgnashcore*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashmedia*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashnet.so*
-%attr(755,root,root) %{_libdir}/gnash/libgnashserver*.so
 %attr(755,root,root) %{_libdir}/gnash/libmozsdk.so*
 %{_datadir}/gnash
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gnashrc
