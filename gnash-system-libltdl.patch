@@ -1,53 +1,59 @@
---- gnash-0.8.3/libbase/Makefile.am.orig	2008-05-15 17:38:39.000000000 +0200
-+++ gnash-0.8.3/libbase/Makefile.am	2008-06-20 07:55:08.842163560 +0200
-@@ -20,12 +20,6 @@
+--- gnash-0.8.4/libbase/Makefile.am.orig	2008-10-12 15:03:29.000000000 +0200
++++ gnash-0.8.4/libbase/Makefile.am	2008-10-15 21:21:50.866638174 +0200
+@@ -20,14 +20,6 @@
  # this is where Gnash plugins get installed
  pluginsdir = $(prefix)/lib/gnash/plugins
  
 -if INSTALL_LTDL
+-if !LIBLTDL2
 -include_HEADERS =  $(top_srcdir)/libltdl/ltdl.h
 -LIBLTDLLIB = libltdl.la
 -LIBLTDLHEAD =  $(top_srcdir)/libltdl/ltdl.h
+-endif
 -endif
 -
  sysconf_DATA = gnashrc gnashpluginrc
  
  edit = sed \
-@@ -43,7 +37,7 @@
+@@ -45,7 +37,7 @@
  
  # If we are using an installable libltdl, then it needs to be built
  # before libgnash, as libgnash depends on it for extensions.
 -pkglib_LTLIBRARIES =  $(LIBLTDLLIB) libgnashbase.la
-+pkglib_LTLIBRARIES =  libgnashbase.la
++pkglib_LTLIBRARIES = libgnashbase.la
  
  libgnashbase_la_CPPFLAGS = -DPLUGINSDIR=\"$(pluginsdir)\" \
  	-DSYSCONFDIR=\"$(sysconfdir)\" \
-@@ -132,7 +126,6 @@
+@@ -121,7 +113,6 @@
  	$(NULL)
  
  noinst_HEADERS = \
 -	$(LIBLTDLHEAD) \
- 	container.h \
- 	dlmalloc.h \
+ 	SimpleBuffer.h \
  	extension.h \
-@@ -174,17 +167,6 @@
+ 	GnashException.h \
+@@ -167,21 +158,6 @@
  
  libgnashbase_la_LDFLAGS = -release $(VERSION)
  
--libltdlc_la_CPPFLAGS = $(LTDLINCL)
+-if !LIBLTDL2
+-libltdlc_la_CPPFLAGS = $(LTDLINCL) -I$(top_srcdir)/libltdl
 -if CONVENIENCE_LTDL
 -noinst_LTLIBRARIES = libltdlc.la
 -libltdlc_la_SOURCES = $(top_srcdir)/libltdl/ltdl.c
 -endif
--CLEANFILES = libltdl.la libltdlc.la gnashrc gnashpluginrc
 -
 -libltdl_la_SOURCES = $(top_srcdir)/libltdl/ltdl.c
 -libltdl_la_LDFLAGS = -no-undefined -version-info 4:4:1
 -libltdl_la_LIBADD = $(LIBADD_DL)
 -
+-if WIN32
+-  libltdl_la_LDFLAGS += -static
+-endif
+-endif
+ CLEANFILES = libltdl.la libltdlc.la gnashrc gnashpluginrc
+ 
  # Rebuild with GCC 4.x Mudflap support
- mudflap:
- 	@echo "Rebuilding with GCC Mudflap support"
 --- gnash-0.8.3/libmedia/Makefile.am.orig	2008-05-15 17:38:39.000000000 +0200
 +++ gnash-0.8.3/libmedia/Makefile.am	2008-06-20 07:50:58.311893357 +0200
 @@ -67,7 +67,6 @@
