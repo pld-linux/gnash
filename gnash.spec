@@ -26,6 +26,7 @@ BuildRequires:	doxygen
 BuildRequires:	expat-devel
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel
+BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 2.0
 BuildRequires:	gstreamer-devel >= 0.10
 BuildRequires:	gtk+2-devel >= 1:2.0
