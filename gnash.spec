@@ -6,14 +6,12 @@
 Summary:	Gnash - free Flash movie player
 Summary(pl.UTF-8):	Gnash - wolnodostępny odtwarzacz filmów Flash
 Name:		gnash
-Version:	0.8.4
+Version:	0.8.7
 Release:	0.1
-License:	GPL v2+
+License:	GPL v3
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	b47a7ed4b7c66b8c2ebacc2286ef0d4b
-Patch0:		%{name}-system-libltdl.patch
-Patch1:		%{name}-lib64.patch
+# Source0-md5:	039533fec46e46b94ac6b04e33d58f3a
 URL:		http://www.gnu.org/software/gnash/
 BuildRequires:	agg-devel
 BuildRequires:	atk-devel >= 1.0
@@ -108,11 +106,6 @@ gnash.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-
-# contains libtool.m4 copy
-rm macros/libltdl.m4
 
 %build
 %{__libtoolize}
@@ -122,20 +115,24 @@ rm macros/libltdl.m4
 %{__automake}
 # use gstreamer as media handler - ffmpeg doesn't have extern "C" wrappers
 %configure \
+	--disable-kparts3 \
+	--disable-sdk-install \
 	--disable-static \
+	--enable-cygnal \
 	--enable-ghelp \
 	--enable-gui=gtk%{?with_kde:,kde} \
 %if %{with kde}
-	--with-kde-pluginprefix=%{_prefix} \
-	--with-qt-incl="%{_includedir}/qt" \
-	--with-qt-lib="%{_libdir}" \
+	--with-kde4-pluginprefix=%{_prefix} \
+	--with-qt4-incl="%{_includedir}/qt" \
+	--with-qt4-lib="%{_libdir}" \
 %else
-	--disable-kparts \
+	--disable-kparts4 \
 %endif
 	--enable-media=gst \
 	--enable-pthreads \
 	--enable-visibility \
-	--with-npapi-plugindir=%{_browserpluginsdir}
+	--with-npapi-plugindir=%{_browserpluginsdir} \
+	--without-included-ltdl
 
 %{__make} \
 	pluginsdir=%{_libdir}/gnash/plugins
@@ -173,24 +170,39 @@ fi
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README TODO
+%attr(755,root,root) %{_bindir}/cygnal
 %attr(755,root,root) %{_bindir}/dumpshm
+%attr(755,root,root) %{_bindir}/findmicrophones
+%attr(755,root,root) %{_bindir}/findwebcams
 %attr(755,root,root) %{_bindir}/flvdumper
 %attr(755,root,root) %{_bindir}/gnash
 %attr(755,root,root) %{_bindir}/gprocessor
 %attr(755,root,root) %{_bindir}/gtk-gnash
 %attr(755,root,root) %{_bindir}/soldumper
+%dir %{_libdir}/cygnal
+%dir %{_libdir}/cygnal/plugins
+%attr(755,root,root) %{_libdir}/cygnal/plugins/echo.so
+%attr(755,root,root) %{_libdir}/cygnal/plugins/oflaDemo.so
 %dir %{_libdir}/gnash
+%attr(755,root,root) %{_libdir}/gnash/libgnashagg.so*
 %attr(755,root,root) %{_libdir}/gnash/libgnashamf*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashbase*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashcore*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashmedia*.so
 %attr(755,root,root) %{_libdir}/gnash/libgnashnet.so*
+%attr(755,root,root) %{_libdir}/gnash/libgnashsound*.so*
 %attr(755,root,root) %{_libdir}/gnash/libmozsdk.so*
 %{_datadir}/gnash
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/cygnalrc
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gnashrc
+%{_mandir}/man1/cygnal.1*
 %{_mandir}/man1/dumpshm.1*
+%{_mandir}/man1/findmicrophones.1*
+%{_mandir}/man1/findwebcams.1*
+%{_mandir}/man1/flvdumper.1*
 %{_mandir}/man1/gnash.1*
 %{_mandir}/man1/gprocessor.1*
+%{_mandir}/man1/gtk-gnash.1*
 %{_mandir}/man1/soldumper.1*
 
 %files -n browser-plugin-%{name}
@@ -202,9 +214,10 @@ fi
 %files -n konqueror-plugin-klash
 %defattr(644,root,root,755)
 %doc plugin/klash/README
-%attr(755,root,root) %{_bindir}/kde-gnash
+%attr(755,root,root) %{_bindir}/kde4-gnash
 %{_libdir}/kde3/libklashpart.la
-%attr(755,root,root) %{_libdir}/kde3/libklashpart.so
+%attr(755,root,root) %{_libdir}/kde4/libklashpart.so
 %{_datadir}/apps/klash
 %{_datadir}/services/klash_part.desktop
+%{_mandir}/man1/kde4-gnash.1*
 %endif
