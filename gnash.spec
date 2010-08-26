@@ -13,6 +13,7 @@ Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnu.org/gnu/gnash/%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	039533fec46e46b94ac6b04e33d58f3a
 URL:		http://www.gnu.org/software/gnash/
+BuildRequires:	SDL-devel
 BuildRequires:	agg-devel
 BuildRequires:	atk-devel >= 1.0
 BuildRequires:	autoconf >= 2.59-9
@@ -27,6 +28,7 @@ BuildRequires:	freetype-devel
 BuildRequires:	giflib-devel
 BuildRequires:	glib2-devel >= 2.0
 BuildRequires:	gstreamer-devel >= 0.10
+BuildRequires:	gstreamer-plugins-base-devel >= 0.10
 BuildRequires:	gtk+2-devel >= 1:2.0
 BuildRequires:	gtkglext-devel
 %if %{with kde}
